@@ -175,10 +175,15 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
       "compositionend",
     ],
     accessor: (e) => {
+      // Only show data for input and composition events
       if (e.eventType === "input" || e.eventType === "beforeinput") {
         return (e as InputEventData).data || "";
       }
-      return (e as CompositionEventData).data || "";
+      if (e.eventType === "compositionstart" || e.eventType === "compositionupdate" || e.eventType === "compositionend") {
+        return (e as CompositionEventData).data || "";
+      }
+      // Return null for keyboard events so they show as empty
+      return null;
     },
     formatter: (value) => (value === null ? "" : JSON.stringify(value)),
   },
