@@ -335,35 +335,34 @@ export function Timeline({ events }: TimelineProps) {
               <rect
                 key={`row-bg-${level}`}
                 x="0"
-                y={i * 24 + 4}
+                y={i * 24}
                 width="100%"
-                height="20"
+                height="24"
                 fill={i % 2 === 0 ? "var(--color-bg)" : "var(--color-sub-alt)"}
                 opacity="0.3"
-                rx="2"
               />
             ))}
             {/* Timeline bars */}
             {allBars.map((bar) => {
               const x = (bar.startTime / timeRange) * 100;
               const levelIndex = activeLevels.indexOf(bar.level);
-              const y = levelIndex * 24 + 8; // 24px spacing between active levels
+              const y = levelIndex * 24; // Base position for 24px rows
 
               if (bar.type === "input" || bar.type === "composition") {
                 // Render input events as dots
-                const textX = x + (5 / timeRange) * 100; // Add 5ms equivalent in percentage
                 return (
                   <g key={`${bar.type}-${bar.id}`}>
                     <circle
                       cx={`${x}%`}
-                      cy={y + 8}
+                      cy={y + 12}
                       r="6"
                       fill={bar.color}
                       opacity="0.8"
                     />
                     <text
-                      x={`${textX}%`}
-                      y={y + 12}
+                      x={`${x}%`}
+                      dx="11"
+                      y={y + 16}
                       textAnchor="start"
                       className="fill-text text-xs font-mono"
                       style={{ fontSize: "8px" }}
@@ -379,7 +378,7 @@ export function Timeline({ events }: TimelineProps) {
                   <g key={`${bar.type}-${bar.id}`}>
                     <rect
                       x={`${x}%`}
-                      y={y}
+                      y={y + 4}
                       width={`${width}%`}
                       height="16"
                       fill={bar.color}
@@ -388,7 +387,7 @@ export function Timeline({ events }: TimelineProps) {
                     />
                     <text
                       x={`${x + width / 2}%`}
-                      y={y + 12}
+                      y={y + 15}
                       textAnchor="middle"
                       className="fill-white text-xs font-mono"
                       style={{ fontSize: "10px" }}
