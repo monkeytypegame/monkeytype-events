@@ -202,8 +202,8 @@ export function Timeline({ events }: TimelineProps) {
     ...compositionUpdateBars,
     ...compositionEndBars,
   ];
-  const maxLevel =
-    allBars.length > 0 ? Math.max(...allBars.map((b) => b.level)) : 0;
+  // const maxLevel =
+  //   allBars.length > 0 ? Math.max(...allBars.map((b) => b.level)) : 0;
   // Only count levels that actually have bars
   const activeLevels = Array.from(
     new Set(allBars.map((bar) => bar.level))
