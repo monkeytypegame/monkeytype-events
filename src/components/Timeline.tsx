@@ -208,7 +208,7 @@ export function Timeline({ events }: TimelineProps) {
   const activeLevels = Array.from(
     new Set(allBars.map((bar) => bar.level))
   ).sort((a, b) => a - b);
-  const timelineHeight = activeLevels.length * 24 + 40; // 24px per active level + padding for axis
+  const timelineHeight = activeLevels.length * 24 + 45; // 24px per active level + padding for axis and margins
 
   if (timeRange === 0) {
     return null;
@@ -334,19 +334,20 @@ export function Timeline({ events }: TimelineProps) {
             {activeLevels.map((level, i) => (
               <rect
                 key={`row-bg-${level}`}
-                x="0"
-                y={i * 24}
-                width="100%"
+                x="4"
+                y={i * 24 + 5}
+                width="calc(100% - 8px)"
                 height="24"
                 fill={i % 2 === 0 ? "var(--color-bg)" : "var(--color-sub-alt)"}
                 opacity="0.3"
+                rx="2"
               />
             ))}
             {/* Timeline bars */}
             {allBars.map((bar) => {
-              const x = (bar.startTime / timeRange) * 100;
+              const x = 1 + (bar.startTime / timeRange) * 98; // 1% left margin, 98% width for content
               const levelIndex = activeLevels.indexOf(bar.level);
-              const y = levelIndex * 24; // Base position for 24px rows
+              const y = levelIndex * 24 + 5; // Base position for 24px rows with top padding
 
               if (bar.type === "input" || bar.type === "composition") {
                 // Render input events as dots
@@ -403,26 +404,26 @@ export function Timeline({ events }: TimelineProps) {
 
             {/* Time axis */}
             <line
-              x1="0"
-              y1={timelineHeight - 20}
-              x2="100%"
-              y2={timelineHeight - 20}
+              x1="1%"
+              y1={timelineHeight - 25}
+              x2="99%"
+              y2={timelineHeight - 25}
               stroke="var(--color-sub)"
               strokeWidth="1"
             />
 
             {/* Time labels */}
             <text
-              x="0"
-              y={timelineHeight - 6}
+              x="1%"
+              y={timelineHeight - 12}
               className="fill-sub text-xs"
               style={{ fontSize: "10px" }}
             >
               0ms
             </text>
             <text
-              x="100%"
-              y={timelineHeight - 6}
+              x="99%"
+              y={timelineHeight - 12}
               textAnchor="end"
               className="fill-sub text-xs"
               style={{ fontSize: "10px" }}
