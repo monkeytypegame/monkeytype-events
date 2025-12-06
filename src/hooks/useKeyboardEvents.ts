@@ -15,13 +15,13 @@ export function useKeyboardEvents() {
     keyup: true,
     keypress: true,
     input: true,
-    beforeinput: false,
+    beforeinput: true,
     compositionstart: true,
     compositionupdate: true,
     compositionend: true,
   });
 
-  const eventIdRef = useRef(1);
+  const eventIdRef = useRef(0);
   const startTimeRef = useRef<number>(0);
   const keydownTimestamps = useRef<Record<string, number>>({});
 
@@ -189,7 +189,7 @@ export function useKeyboardEvents() {
 
   const clearEvents = useCallback(() => {
     setEvents([]);
-    eventIdRef.current = 1;
+    eventIdRef.current = 0;
     startTimeRef.current = 0; // Reset start time so next event will be timestamp 0
     keydownTimestamps.current = {}; // Clear stored keydown timestamps
   }, []);

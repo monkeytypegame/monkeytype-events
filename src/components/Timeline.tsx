@@ -387,15 +387,13 @@ export function Timeline({ events }: TimelineProps) {
                       opacity="0.8"
                     />
                     <text
-                      x={`${x + width / 2}%`}
+                      x={`${x + 0.5}%`}
                       y={y + 15}
-                      textAnchor="middle"
+                      textAnchor="start"
                       className="fill-white text-xs font-mono"
-                      style={{ fontSize: "10px" }}
+                      style={{ fontSize: "9px" }}
                     >
-                      {bar.label.length > 6
-                        ? bar.label.substring(0, 4) + ".."
-                        : bar.label}
+                      {bar.label}
                     </text>
                   </g>
                 );

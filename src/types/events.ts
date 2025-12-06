@@ -71,7 +71,7 @@ export const defaultFilters: EventFilters = {
   keyup: true,
   keypress: true,
   input: true,
-  beforeinput: false,
+  beforeinput: true,
   compositionstart: true,
   compositionupdate: true,
   compositionend: true,

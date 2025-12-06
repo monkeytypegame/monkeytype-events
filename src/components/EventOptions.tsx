@@ -101,27 +101,47 @@ export function EventOptions({
         {eventTypes.map(({ key, label, description }) => (
           <label
             key={key}
-            className="flex items-center space-x-2 cursor-pointer group"
+            className="flex items-center cursor-pointer group p-2 rounded-lg hover:bg-sub-alt/30 transition-all duration-200"
             title={description}
           >
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={filters[key]}
-                onChange={() => handleToggle(key)}
-                className="w-4 h-4 text-main bg-bg border-sub rounded focus:ring-main/50 focus:ring-2 transition-all duration-200"
-              />
-              <div
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{
-                  backgroundColor:
-                    EVENT_COLORS[key as keyof typeof EVENT_COLORS],
-                  opacity: filters[key] ? 1 : 0.3,
-                }}
-              />
+            <input
+              type="checkbox"
+              checked={filters[key]}
+              onChange={() => handleToggle(key)}
+              className="sr-only"
+            />
+            {/* Custom checkbox */}
+            <div
+              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
+                filters[key]
+                  ? "border-main bg-main shadow-sm"
+                  : "border-sub hover:border-main/70 bg-bg"
+              }`}
+            >
+              {filters[key] && (
+                <svg
+                  className="w-3 h-3 text-bg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
             </div>
+            <div
+              className="w-3 h-3 rounded-full flex-shrink-0 ml-4 transition-opacity duration-200"
+              style={{
+                backgroundColor:
+                  EVENT_COLORS[key as keyof typeof EVENT_COLORS],
+                opacity: filters[key] ? 1 : 0.4,
+              }}
+            />
             <span
-              className={`text-sm font-mono transition-colors duration-200 ${
+              className={`text-sm font-mono ml-1.5 transition-colors duration-200 ${
                 filters[key]
                   ? "text-text group-hover:text-main"
                   : "text-sub group-hover:text-text"
