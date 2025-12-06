@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { EventData } from "../types/events";
 
 interface ExportImportModalProps {
@@ -20,6 +20,42 @@ export function ExportImportModal({
   const [copySuccess, setCopySuccess] = useState(false);
 
   const exportJson = JSON.stringify(events, null, 2);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        event.preventDefault();
+        event.stopPropagation();
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscKey);
+      return () => {
+        document.removeEventListener('keydown', handleEscKey);
+      };
+    }
+  }, [isOpen, onClose]);
+
+  // Prevent body scroll when modal is open and preserve scrollbar space
+  useEffect(() => {
+    if (isOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      const body = document.body;
+      const originalOverflow = body.style.overflow;
+      const originalPaddingRight = body.style.paddingRight;
+      
+      body.style.overflow = 'hidden';
+      body.style.paddingRight = `${(parseInt(originalPaddingRight) || 0) + scrollbarWidth}px`;
+
+      return () => {
+        body.style.overflow = originalOverflow;
+        body.style.paddingRight = originalPaddingRight;
+      };
+    }
+  }, [isOpen]);
 
   const handleCopy = async () => {
     try {
@@ -49,8 +85,14 @@ export function ExportImportModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-bg border border-sub rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] flex flex-col">
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-bg border border-sub rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-main">
             {mode === "export" ? "Export Events" : "Import Events"}
