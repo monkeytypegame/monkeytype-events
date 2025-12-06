@@ -37,7 +37,7 @@ export const formatModifiers = (event: KeyboardEventData): string => {
   if (event.shiftKey) modifiers.push("Shift");
   if (event.altKey) modifiers.push("Alt");
   if (event.metaKey) modifiers.push("Meta");
-  return modifiers.join("+") || "—";
+  return modifiers.join("+") || "";
 };
 
 export const formatLocation = (location: number): string => {
@@ -51,7 +51,7 @@ export const formatLocation = (location: number): string => {
 };
 
 export const formatBoolean = (value: boolean): string => {
-  return value ? "✓" : "—";
+  return value ? "✓" : "";
 };
 
 export const formatTextareaValue = (value: string): string => {
@@ -104,25 +104,31 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
     key: "key",
     header: "Key",
     eventTypes: ["keydown", "keyup", "keypress"],
-    accessor: (e) => (e as KeyboardEventData).key || "—",
+    accessor: (e) => (e as KeyboardEventData).key || "",
   },
   {
     key: "code",
     header: "Code",
     eventTypes: ["keydown", "keyup", "keypress"],
-    accessor: (e) => (e as KeyboardEventData).code || "—",
+    accessor: (e) => (e as KeyboardEventData).code || "",
   },
   {
     key: "keyCode",
     header: "KeyCode",
     eventTypes: ["keydown", "keyup", "keypress"],
-    accessor: (e) => (e as KeyboardEventData).keyCode ?? 0,
+    accessor: (e) => {
+      const keyCode = (e as KeyboardEventData).keyCode;
+      return keyCode && keyCode !== 0 ? keyCode.toString() : "";
+    },
   },
   {
     key: "charCode",
     header: "CharCode",
     eventTypes: ["keypress"],
-    accessor: (e) => (e as KeyboardEventData).charCode ?? 0,
+    accessor: (e) => {
+      const charCode = (e as KeyboardEventData).charCode;
+      return charCode && charCode !== 0 ? charCode.toString() : "";
+    },
   },
   {
     key: "modifiers",
@@ -134,7 +140,10 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
     key: "location",
     header: "Location",
     eventTypes: ["keydown", "keyup", "keypress"],
-    accessor: (e) => (e as KeyboardEventData).location ?? 0,
+    accessor: (e) => {
+      const location = (e as KeyboardEventData).location;
+      return location !== undefined ? location : 0;
+    },
     formatter: (value) => formatLocation(value as number),
   },
   {
@@ -145,7 +154,7 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
     formatter: (value) =>
       value !== null && typeof value === "number"
         ? `${value.toFixed(2)}ms`
-        : "—",
+        : "",
   },
 
   // Input event columns
@@ -153,7 +162,7 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
     key: "inputType",
     header: "Input Type",
     eventTypes: ["input", "beforeinput"],
-    accessor: (e) => (e as InputEventData).inputType || "—",
+    accessor: (e) => (e as InputEventData).inputType || "",
   },
   {
     key: "data",
@@ -167,11 +176,11 @@ export const COLUMN_CONFIGS: ColumnConfig[] = [
     ],
     accessor: (e) => {
       if (e.eventType === "input" || e.eventType === "beforeinput") {
-        return (e as InputEventData).data || "—";
+        return (e as InputEventData).data || "";
       }
-      return (e as CompositionEventData).data || "—";
+      return (e as CompositionEventData).data || "";
     },
-    formatter: (value) => (value === null ? "—" : JSON.stringify(value)),
+    formatter: (value) => (value === null ? "" : JSON.stringify(value)),
   },
   {
     key: "isComposing",
@@ -216,8 +225,8 @@ export const getCellValue = (
     if (column.formatter) {
       return column.formatter(value);
     }
-    return String(value ?? "—");
+    return String(value ?? "");
   } catch {
-    return "—";
+    return "";
   }
 };

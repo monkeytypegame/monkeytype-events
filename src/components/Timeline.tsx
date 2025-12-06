@@ -305,7 +305,7 @@ export function Timeline({ events }: TimelineProps) {
 
       <div className="flex">
         {/* Row titles */}
-        <div className="flex-shrink-0 w-32 pr-3">
+        <div className="flex-shrink-0 w-40 pr-3">
           <div style={{ height: `${timelineHeight}px`, position: "relative" }}>
             {rowTitles.map((title, i) => (
               <div

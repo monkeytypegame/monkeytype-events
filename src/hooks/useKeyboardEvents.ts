@@ -13,7 +13,7 @@ export function useKeyboardEvents() {
   const [filters, setFilters] = useState<EventFilters>({
     keydown: true,
     keyup: true,
-    keypress: true,
+    keypress: false,
     input: true,
     beforeinput: true,
     compositionstart: true,
