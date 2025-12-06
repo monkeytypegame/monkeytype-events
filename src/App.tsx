@@ -14,6 +14,7 @@ function App() {
     filters,
     attachEventListeners,
     clearEvents,
+    importEvents,
     updateFilters,
   } = useKeyboardEvents();
 
@@ -69,6 +70,7 @@ function App() {
           events={allEvents}
           showDelays={showDelays}
           onShowDelaysChange={setShowDelays}
+          onImportEvents={importEvents}
         />
 
         {/* Timeline */}

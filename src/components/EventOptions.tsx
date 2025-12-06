@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { EventFilters, EventData } from "../types/events";
 import { EVENT_COLORS } from "../utils/eventHelpers";
+import { ExportImportModal } from "./ExportImportModal";
 
 interface EventOptionsProps {
   filters: EventFilters;
@@ -9,6 +11,7 @@ interface EventOptionsProps {
   events: EventData[];
   showDelays: boolean;
   onShowDelaysChange: (showDelays: boolean) => void;
+  onImportEvents: (events: EventData[]) => void;
 }
 
 export function EventOptions({
@@ -19,7 +22,11 @@ export function EventOptions({
   events,
   showDelays,
   onShowDelaysChange,
+  onImportEvents,
 }: EventOptionsProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<"export" | "import">("export");
+
   // Calculate event counts by type
   const eventCounts = events.reduce((counts, event) => {
     counts[event.eventType] = (counts[event.eventType] || 0) + 1;
@@ -76,6 +83,16 @@ export function EventOptions({
     onFiltersChange(allDisabled);
   };
 
+  const handleExport = () => {
+    setModalMode("export");
+    setModalOpen(true);
+  };
+
+  const handleImport = () => {
+    setModalMode("import");
+    setModalOpen(true);
+  };
+
   return (
     <div className="bg-sub-alt rounded-lg p-4 border border-sub/20 space-y-4">
       {/* Header with controls */}
@@ -127,6 +144,19 @@ export function EventOptions({
             </div>
             Show Delays
           </label>
+          <button
+            onClick={handleExport}
+            className="text-xs px-2 py-1 bg-sub/20 hover:bg-sub/30 text-text rounded transition-colors duration-200"
+            disabled={events.length === 0}
+          >
+            Export JSON
+          </button>
+          <button
+            onClick={handleImport}
+            className="text-xs px-2 py-1 bg-sub/20 hover:bg-sub/30 text-text rounded transition-colors duration-200"
+          >
+            Import JSON
+          </button>
         </div>
       </div>
 
@@ -210,6 +240,14 @@ export function EventOptions({
           })}
         </div>
       </div>
+
+      <ExportImportModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        events={events}
+        onImportEvents={onImportEvents}
+        mode={modalMode}
+      />
     </div>
   );
 }

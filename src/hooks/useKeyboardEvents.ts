@@ -194,6 +194,17 @@ export function useKeyboardEvents() {
     keydownTimestamps.current = {}; // Clear stored keydown timestamps
   }, []);
 
+  const importEvents = useCallback((importedEvents: EventData[]) => {
+    setEvents(importedEvents);
+    // Reset event ID to the highest ID in imported events + 1
+    const maxId = importedEvents.reduce((max, event) => Math.max(max, event.eventId), 0);
+    eventIdRef.current = maxId + 1;
+    // Reset timestamps - they'll be relative to the imported events
+    const firstEvent = importedEvents[0];
+    startTimeRef.current = firstEvent ? firstEvent.timestamp - firstEvent.relativeTime : 0;
+    keydownTimestamps.current = {};
+  }, []);
+
   const updateFilters = useCallback((newFilters: Partial<EventFilters>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   }, []);
@@ -208,6 +219,7 @@ export function useKeyboardEvents() {
     filters,
     attachEventListeners,
     clearEvents,
+    importEvents,
     updateFilters,
   };
 }
