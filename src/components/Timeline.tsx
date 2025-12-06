@@ -432,7 +432,7 @@ export function Timeline({ events }: TimelineProps) {
         </div>
       </div>
 
-      <div className="text-xs text-sub mt-2">
+      {/* <div className="text-xs text-sub mt-2">
         Showing {keypressBars.length} keypress
         {keypressBars.length !== 1 ? "es" : ""}
         {beforeInputBars.length > 0 &&
@@ -445,7 +445,7 @@ export function Timeline({ events }: TimelineProps) {
         {compositionEndBars.length > 0 &&
           `, ${compositionEndBars.length} compositionend`}
         {maxLevel > 0 && ` across ${maxLevel + 1} rows`}
-      </div>
+      </div> */}
     </div>
   );
 }
