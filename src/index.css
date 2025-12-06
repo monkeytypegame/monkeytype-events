@@ -12,3 +12,29 @@
   --color-colorful-error: #ca4754;
   --color-colorful-error-extra: #7e2a33;
 }
+
+/* Custom scrollbar styles */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: var(--color-sub-alt);
+  border-radius: 10px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: var(--color-sub);
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text);
+}
+
+/* Firefox scrollbar styling */
+.overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sub) var(--color-sub-alt);
+}
