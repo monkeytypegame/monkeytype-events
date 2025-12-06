@@ -29,12 +29,6 @@ export function EventOptions({
       label: "keypress",
       description: "Key press (deprecated)",
     },
-    { key: "input", label: "input", description: "Text input changes" },
-    {
-      key: "beforeinput",
-      label: "beforeinput",
-      description: "Before text input",
-    },
     {
       key: "compositionstart",
       label: "compositionstart",
@@ -49,6 +43,12 @@ export function EventOptions({
       key: "compositionend",
       label: "compositionend",
       description: "IME composition end",
+    },
+    { key: "input", label: "input", description: "Text input changes" },
+    {
+      key: "beforeinput",
+      label: "beforeinput",
+      description: "Before text input",
     },
   ] as const;
 
@@ -97,7 +97,7 @@ export function EventOptions({
       </div>
 
       {/* Event type toggles */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         {eventTypes.map(({ key, label, description }) => (
           <label
             key={key}
