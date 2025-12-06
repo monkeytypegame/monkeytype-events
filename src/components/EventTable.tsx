@@ -87,7 +87,7 @@ export function EventTable({ events, filters, showDelays }: EventTableProps) {
                       key={`${event.id}-${column.key}`}
                       className="px-3 py-2 text-text font-mono text-xs whitespace-nowrap"
                     >
-                      {column.key === "eventType" ? (
+                      {column.key === "eventType" && "eventType" in event ? (
                         <div className="flex items-center space-x-2">
                           <div
                             className="w-2 h-2 rounded-full flex-shrink-0"
@@ -98,10 +98,10 @@ export function EventTable({ events, filters, showDelays }: EventTableProps) {
                                 ],
                             }}
                           />
-                          <span>{getCellValue(event, column)}</span>
+                          <span>{getCellValue(event as EventData, column)}</span>
                         </div>
                       ) : (
-                        getCellValue(event, column)
+                        "eventType" in event ? getCellValue(event as EventData, column) : "-"
                       )}
                     </td>
                   ))}

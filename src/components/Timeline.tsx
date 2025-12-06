@@ -12,7 +12,7 @@ interface TimelineBar {
   duration: number;
   color: string;
   level: number; // Row level for overlapping bars
-  type: "keypress" | "input";
+  type: "keypress" | "input" | "composition";
 }
 
 export function Timeline({ events }: TimelineProps) {

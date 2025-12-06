@@ -197,11 +197,11 @@ export function useKeyboardEvents() {
   const importEvents = useCallback((importedEvents: EventData[]) => {
     setEvents(importedEvents);
     // Reset event ID to the highest ID in imported events + 1
-    const maxId = importedEvents.reduce((max, event) => Math.max(max, event.eventId), 0);
+    const maxId = importedEvents.reduce((max, event) => Math.max(max, event.id), 0);
     eventIdRef.current = maxId + 1;
-    // Reset timestamps - they'll be relative to the imported events
+    // Reset timestamps - use the first event's timestamp as the new start time
     const firstEvent = importedEvents[0];
-    startTimeRef.current = firstEvent ? firstEvent.timestamp - firstEvent.relativeTime : 0;
+    startTimeRef.current = firstEvent ? firstEvent.timestamp : 0;
     keydownTimestamps.current = {};
   }, []);
 
