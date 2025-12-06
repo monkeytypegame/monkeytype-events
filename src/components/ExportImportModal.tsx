@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { EventData } from "../types/events";
 
 interface ExportImportModalProps {
@@ -18,6 +18,8 @@ export function ExportImportModal({
 }: ExportImportModalProps) {
   const [importText, setImportText] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
+  const exportTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const importTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const exportJson = JSON.stringify(events, null, 2);
 
@@ -56,6 +58,22 @@ export function ExportImportModal({
       };
     }
   }, [isOpen]);
+
+  // Focus the appropriate textarea when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Small delay to ensure modal is fully rendered
+      const timer = setTimeout(() => {
+        if (mode === 'export' && exportTextareaRef.current) {
+          exportTextareaRef.current.focus();
+          exportTextareaRef.current.select(); // Select all text for easy copying
+        } else if (mode === 'import' && importTextareaRef.current) {
+          importTextareaRef.current.focus();
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, mode]);
 
   const handleCopy = async () => {
     try {
@@ -119,6 +137,7 @@ export function ExportImportModal({
               </button>
             </div>
             <textarea
+              ref={exportTextareaRef}
               value={exportJson}
               readOnly
               className="flex-1 bg-bg border border-sub rounded p-3 text-text font-mono text-sm resize-none"
@@ -129,6 +148,7 @@ export function ExportImportModal({
           <div className="flex flex-col flex-1">
             <p className="text-text mb-2">Paste the JSON data below:</p>
             <textarea
+              ref={importTextareaRef}
               value={importText}
               onChange={(e) => setImportText(e.target.value)}
               placeholder="Paste exported JSON data here..."
