@@ -7,6 +7,8 @@ interface EventOptionsProps {
   eventCount: number;
   totalEvents: number;
   events: EventData[];
+  showDelays: boolean;
+  onShowDelaysChange: (showDelays: boolean) => void;
 }
 
 export function EventOptions({
@@ -15,6 +17,8 @@ export function EventOptions({
   eventCount,
   totalEvents,
   events,
+  showDelays,
+  onShowDelaysChange,
 }: EventOptionsProps) {
   // Calculate event counts by type
   const eventCounts = events.reduce((counts, event) => {
@@ -93,6 +97,36 @@ export function EventOptions({
           >
             Hide All
           </button>
+          <label className="flex items-center cursor-pointer text-xs text-text">
+            <input
+              type="checkbox"
+              checked={showDelays}
+              onChange={(e) => onShowDelaysChange(e.target.checked)}
+              className="sr-only"
+            />
+            <div
+              className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 mr-2 ${
+                showDelays
+                  ? "border-main bg-main shadow-sm"
+                  : "border-sub hover:border-main/70 bg-bg"
+              }`}
+            >
+              {showDelays && (
+                <svg
+                  className="w-2.5 h-2.5 text-bg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+            Show Delays
+          </label>
         </div>
       </div>
 

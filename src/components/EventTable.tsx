@@ -11,11 +11,12 @@ import { addDelayRowsToEvents } from "../utils/delayRows";
 interface EventTableProps {
   events: EventData[];
   filters: EventFilters;
+  showDelays: boolean;
 }
 
-export function EventTable({ events, filters }: EventTableProps) {
+export function EventTable({ events, filters, showDelays }: EventTableProps) {
   const visibleColumns = getVisibleColumns(filters);
-  const eventsWithDelays = addDelayRowsToEvents(events);
+  const eventsWithDelays = showDelays ? addDelayRowsToEvents(events) : events;
 
   if (events.length === 0) {
     return (
@@ -59,7 +60,7 @@ export function EventTable({ events, filters }: EventTableProps) {
           <tbody className="divide-y divide-sub/10">
             {eventsWithDelays.map((event) => {
               // Handle delay rows
-              if ("isDelayRow" in event) {
+              if (showDelays && "isDelayRow" in event) {
                 return (
                   <tr
                     key={event.id}
@@ -116,7 +117,7 @@ export function EventTable({ events, filters }: EventTableProps) {
         <div className="flex items-center justify-between text-xs text-sub">
           <span>
             Showing {events.length} events
-            {eventsWithDelays.filter((e) => "isDelayRow" in e).length > 0 &&
+            {showDelays && eventsWithDelays.filter((e) => "isDelayRow" in e).length > 0 &&
               ` with ${
                 eventsWithDelays.filter((e) => "isDelayRow" in e).length
               } delay rows`}

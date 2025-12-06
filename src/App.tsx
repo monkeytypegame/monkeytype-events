@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useKeyboardEvents } from "./hooks/useKeyboardEvents";
 import { TextareaInput } from "./components/TextareaInput";
 import { EventOptions } from "./components/EventOptions";
@@ -7,6 +7,7 @@ import { EventTable } from "./components/EventTable";
 
 function App() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [showDelays, setShowDelays] = useState(true);
   const {
     events,
     allEvents,
@@ -66,13 +67,15 @@ function App() {
           eventCount={filteredEventCount}
           totalEvents={totalEvents}
           events={allEvents}
+          showDelays={showDelays}
+          onShowDelaysChange={setShowDelays}
         />
 
         {/* Timeline */}
         <Timeline events={events} />
 
         {/* Event Table */}
-        <EventTable events={events} filters={filters} />
+        <EventTable events={events} filters={filters} showDelays={showDelays} />
       </div>
     </div>
   );
